@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-statefulset
+  namespace: chat-app
+spec:
+  serviceName: mysql-service
+  replicas: 1
+  selector:
+    matchLabels:     # Label must match .spec.template.metadata.labels
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql   # Label must match .spec.selector.matchLabels
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root123"
+        - name: MYSQL_DATABASE
+          value: "chattingo"
+        - name: MYSQL_USER
+          value: "chattingo"
+        - name: MYSQL_PASSWORD
+          value: "chattingo123"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: manual
+      resources:
+        requests:
+          storage: 2Gi
