@@ -20,7 +20,7 @@ spec:
         - containerPort: 8080
         env:
         - name: SPRING_DATASOURCE_URL
-          value: "jdbc:mysql://mysql-service:3306/chattingo"
+          value: "jdbc:mysql://mysql-service:3306/chattingo?connectTimeout=60000&socketTimeout=60000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
         - name: SPRING_DATASOURCE_USERNAME
           value: "root"
         - name: SPRING_DATASOURCE_PASSWORD
@@ -28,7 +28,11 @@ spec:
         - name: JWT_SECRET
           value: "39cae1527226b1f82f071f3d3acc8570"
         - name: CORS_ALLOWED_ORIGINS
-          value: "http://localhost:3000,https://your-domain.com,http://backend-service:8080"
+          value: "http://localhost:30080,http://localhost:3000,http://chat.local,http://chat.local,https://your-domain.com,http://backend-service:8080"
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: "update"
+        - name: SPRING_JPA_SHOW_SQL
+          value: "true"
         resources:
           requests:
             memory: "512Mi"

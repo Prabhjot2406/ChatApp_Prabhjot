@@ -4,9 +4,10 @@ metadata:
   name: frontend-service
   namespace: chat-app
 spec:
+  type: ClusterIP        #NodePort
   selector:
     app: frontend
   ports:
   - port: 80
     targetPort: 80
-  type: ClusterIP
+    # nodePort: 30080

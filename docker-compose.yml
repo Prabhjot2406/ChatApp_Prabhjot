@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  database:
+  mysql:
     image: mysql:8.0
-    container_name: chattingo-db
+    container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: chattingo
@@ -15,34 +15,39 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - chattingo-network
+    restart: unless-stopped
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: chattingo-backend
+    image: prabhjot24/chattingo-backend:latest
+    container_name: backend-container
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/chattingo
-      SPRING_DATASOURCE_USERNAME: chattingo
-      SPRING_DATASOURCE_PASSWORD: chattingo123
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/chattingo?connectTimeout=60000&socketTimeout=60000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+      JWT_SECRET: 39cae1527226b1f82f071f3d3acc8570
+      CORS_ALLOWED_ORIGINS: "http://localhost:3000"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
     ports:
       - "8080:8080"
     depends_on:
-      - database
+      - mysql
     networks:
       - chattingo-network
+    restart: unless-stopped
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: chattingo-frontend
+    image: prabhjot24/chattingo-frontend:latest
+    container_name: frontend-container
+    environment:
+      REACT_APP_API_URL: "http://localhost:8080"
     ports:
-      - "80:80"
+      - "3000:80"
     depends_on:
       - backend
     networks:
       - chattingo-network
+    restart: unless-stopped
 
 volumes:
   mysql_data:
