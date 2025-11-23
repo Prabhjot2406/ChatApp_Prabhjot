@@ -15,12 +15,10 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: prabhjot24/chattingo-frontend:latest
+        image: prabhjot24/chattingo-frontend-linux:latest
         ports:
         - containerPort: 80
-        env:
-        - name: REACT_APP_API_URL
-          value: "http://chat.local:7777/api"
+
         resources:
           requests:
             memory: "128Mi"

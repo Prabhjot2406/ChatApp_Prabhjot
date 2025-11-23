@@ -139,13 +139,6 @@ spec:
         - --kubelet-use-node-status-port
         - --metric-resolution=15s
         - --kubelet-insecure-tls
-        - --requestheader-client-ca-file=/etc/certs/requestheader-ca.crt
-        - --requestheader-allowed-names=front-proxy-client
-        - --requestheader-extra-headers-prefix=X-Remote-Extra-
-        - --requestheader-group-headers=X-Remote-Group
-        - --requestheader-username-headers=X-Remote-User
-        - --tls-cert-file=/tmp/apiserver.crt
-        - --tls-private-key-file=/tmp/apiserver.key
         image: registry.k8s.io/metrics-server/metrics-server:v0.8.0
         imagePullPolicy: IfNotPresent
         livenessProbe:

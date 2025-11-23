@@ -23,7 +23,7 @@ public class AppConfig {
 
     private final JwtValidator jwtValidator;
 
-    @Value("${cors.allowed.origins:http://localhost:3000,http://localhost}")
+    @Value("${cors.allowed.origins:http://localhost:3000,http://localhost,http://localhost:8081}")
     private String allowedOrigins;
 
     @Value("${cors.allowed.methods:GET,POST,PUT,DELETE,OPTIONS}")
